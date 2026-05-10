@@ -26,7 +26,9 @@ def salvar_no_supabase(conteudo):
     except Exception as e:
         print(f"Erro ao enviar para o banco: {e}")
 
-model = YOLO("yolov8n.pt")
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+model_path = os.path.join(base_dir, "models", "yolov8n.pt")
+model = YOLO(model_path)
  
 cap = cv2.VideoCapture(1)
 
