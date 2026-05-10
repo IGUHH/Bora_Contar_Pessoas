@@ -55,7 +55,7 @@ while True:
         # Sé salva no Supabase se já se passaram 'intervalo_envio' segundos (ex: 3 segundos)
         if (tempo_atual - ultimo_envio) > intervalo_envio:
             print(time, f"Salvando no banco... Pessoas detectadas: {total}")
-            salvar_no_supabase((time,f"Pessoas detectadas: {total}"))
+            salvar_no_supabase(total)
             ultimo_envio = tempo_atual
         else:
             # Imprime no terminal normalmente mas NÃO manda pro banco para não travar o vídeo
