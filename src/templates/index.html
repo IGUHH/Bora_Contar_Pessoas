@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Detecções</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body style="background:#0f1117;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
+
+    <canvas id="grafico" width="800" height="400"></canvas>
+
+    <script>
+        const SUPABASE_URL = "https://wptkefmjqtmkqxgtmwzg.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwdGtlZm1qcXRta3F4Z3Rtd3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMjYyODMsImV4cCI6MjA5MTcwMjI4M30.HwidpFnivdXaJrO_L3FF1_7LSHaG_VTdOiumPBGO03k";
+
+        const chart = new Chart(document.getElementById("grafico"), {
+            type: "line",
+            data: {
+                labels: [],
+                datasets: [{
+                    data: [],
+                    borderColor: "#1D9E75",
+                    backgroundColor: "rgba(29,158,117,0.15)",
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { color: "#888" }, grid: { color: "rgba(255,255,255,0.05)" } },
+                    y: { beginAtZero: true, ticks: { color: "#888", precision: 0 }, grid: { color: "rgba(255,255,255,0.05)" } }
+                }
+            }
+        });
+
+        async function atualizar() {
+            const res = await fetch(
+                SUPABASE_URL + "/rest/v1/registros?select=criado_em,texto_saida&order=criado_em.desc&limit=10",
+                { headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY } }
+            );
+
+            const linhas = await res.json();
+            console.log("Dados recebidos:", linhas); // ver no F12
+
+            // inverte para ordem cronológica
+            const ordenado = linhas.reverse();
+
+            const labels = ordenado.map(l =>
+                new Date(l.criado_em).toLocaleTimeString("pt-BR", { timeZone: "America/Sao_Paulo" })
+            );
+
+            const values = ordenado.map(l => Number(l.texto_saida));
+
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = values;
+            chart.update();
+        }
+
+        atualizar();
+        setInterval(atualizar, 2000);
+    </script>
+
+</body>
+
+</html>

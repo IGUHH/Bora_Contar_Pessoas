@@ -13,13 +13,17 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/).
 
 ### Adicionado
 
-- **`requirements.txt`** — Arquivo de dependências criado com os pacotes necessários (`ultralytics`, `opencv-python`, `supabase`, `python-dotenv`).
+- **Dashboard Web (Tempo Real):**
+  - **`src/app.py`** — Servidor web local criado com Flask para hospedar a interface.
+  - **`src/templates/index.html`** — Painel em HTML/JS com Chart.js que se conecta via API REST diretamente ao Supabase e atualiza o gráfico de detecções a cada 2 segundos.
+- **`requirements.txt`** — Arquivo de dependências criado com os pacotes necessários (`ultralytics`, `opencv-python`, `supabase`, `python-dotenv`, `flask`).
 - **`CHANGELOG.md`** — Este arquivo de changelog do projeto.
 
 ---
 
 ### Alterado
 
+- **`requirements.txt`** — Fixado com as versões exatas de todas as dependências e subdependências (gerado com `pip freeze`).
 - **Estrutura de pastas reorganizada:**
   - `contiti.py` → `src/main.py` (renomeado e movido para diretório `src/`)
   - `yolov8n.pt` → `models/yolov8n.pt` (movido para diretório `models/`)
